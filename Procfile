@@ -1,0 +1,1 @@
+web: chroma run --host 0.0.0.0 --port $PORT --path /app/data 

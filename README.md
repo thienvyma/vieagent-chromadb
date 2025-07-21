@@ -4,6 +4,60 @@
 
 ---
 
+## 🚨 **CRITICAL FIX APPLIED**
+
+### **Issue Fixed:** 
+- ❌ **Error**: "Expecting 'chromadb' to be enabled because it is the default"
+- ✅ **Solution**: Added proper ChromaDB start command and configuration
+
+### **Changes Made:**
+```bash
+✅ Fixed Dockerfile with CMD ["chroma", "run", "--host", "0.0.0.0", "--port", "8000", "--path", "/app/data"]
+✅ Added Procfile: web: chroma run --host 0.0.0.0 --port $PORT --path /app/data
+✅ Created railway.json with proper startCommand
+✅ Added env.template with all required variables
+✅ Set PERSIST_DIRECTORY=/app/data for proper data storage
+```
+
+---
+
+## 🚀 **DEPLOYMENT FIXED - TEST THESE URLS**
+
+```bash
+# Health Check:
+https://vietagent-chromadb.up.railway.app/api/v1
+
+# Version:
+https://vietagent-chromadb.up.railway.app/api/v1/version
+
+# Collections:
+https://vietagent-chromadb.up.railway.app/api/v1/collections
+```
+
+**Expected Response:** JSON data instead of 404 errors!
+
+---
+
+## 🔧 **Railway Configuration**
+
+### **✅ Required Variables (Already Set):**
+```bash
+PORT=8000
+CHROMA_HOST=0.0.0.0
+CHROMA_PORT=8000
+IS_PERSISTENT=1
+PERSIST_DIRECTORY=/app/data
+ANONYMIZED_TELEMETRY=false
+CHROMA_DB_IMPL=duckdb+parquet
+```
+
+### **✅ Start Command Options:**
+1. **Dockerfile CMD** (Primary): `chroma run --host 0.0.0.0 --port 8000 --path /app/data`
+2. **Procfile** (Backup): `web: chroma run --host 0.0.0.0 --port $PORT --path /app/data`
+3. **railway.json** (Alternative): Configured with proper startCommand
+
+---
+
 ## 🏗️ **Architecture Overview**
 
 This is a **microservices separation** from the main VIEAgent platform:
@@ -17,12 +71,12 @@ This is a **microservices separation** from the main VIEAgent platform:
 ### **1. Repository Connection**
 ```bash
 # This repo is connected to:
-GitHub: https://github.com/thienvyma/vieagent-chromadb.git
+GitHub: https://github.com/thienvyma/vietagent-chromadb.git
 Railway: https://railway.com/project/ad7b3b57-800f-4e7f-b50c-fb53201b6ab8
 ```
 
 ### **2. Environment Variables**
-No environment variables needed - all configured in Dockerfile.
+All essential variables configured in Dockerfile and can be overridden in Railway Variables tab.
 
 ### **3. 💾 Data Persistence Setup**
 
@@ -38,7 +92,7 @@ ChromaDB stores vector data that **MUST persist** across container restarts. Rai
 4. Scroll to "Volumes" section
 5. Click "Add Volume":
    - Volume Name: chromadb-data
-   - Mount Path: /data
+   - Mount Path: /app/data
    - Size: 5GB (recommended minimum)
 6. Click "Create Volume"
 7. Redeploy the service
@@ -47,7 +101,7 @@ ChromaDB stores vector data that **MUST persist** across container restarts. Rai
 ##### **3.2. Data Storage Structure:**
 ```bash
 # Railway Volume Mount:
-/data/                          # Railway persistent volume
+/app/data/                          # Persistent storage
 ├── chroma.sqlite3              # Main database file
 ├── [collection-uuid-1]/        # Vector collection 1
 │   ├── header.bin
@@ -70,7 +124,7 @@ ChromaDB stores vector data that **MUST persist** across container restarts. Rai
 
 ### **Production URLs**
 ```bash
-Base URL: https://vietagent-chromadb-production.up.railway.app
+Base URL: https://vietagent-chromadb.up.railway.app
 
 # Health Checks:
 GET /api/v1                     # API info & health
@@ -110,19 +164,19 @@ POST /api/v1/collections/{id}/delete  # Delete vectors
 
 ### **1. Basic Health Check**
 ```bash
-curl https://vietagent-chromadb-production.up.railway.app/api/v1
+curl https://vietagent-chromadb.up.railway.app/api/v1
 # Expected: JSON response with nanosecond heartbeat
 ```
 
 ### **2. Version Check**
 ```bash
-curl https://vietagent-chromadb-production.up.railway.app/api/v1/version
+curl https://vietagent-chromadb.up.railway.app/api/v1/version
 # Expected: {"version": "x.x.x"}
 ```
 
 ### **3. Collections Check** 
 ```bash
-curl https://vietagent-chromadb-production.up.railway.app/api/v1/collections
+curl https://vietagent-chromadb.up.railway.app/api/v1/collections
 # Expected: [] (empty array for new DB)
 ```
 
@@ -133,7 +187,7 @@ from chromadb.config import Settings
 
 # Connect to Railway ChromaDB
 client = chromadb.HttpClient(
-    host="vietagent-chromadb-production.up.railway.app",
+    host="vietagent-chromadb.up.railway.app",
     port=443,
     ssl=True,
     settings=Settings(
@@ -173,10 +227,10 @@ print("Version:", client.get_version())
 ### **Environment Variables for ai-agent-platform**
 ```bash
 # Add to Vercel environment variables:
-CHROMADB_HOST=vietagent-chromadb-production.up.railway.app
+CHROMADB_HOST=vietagent-chromadb.up.railway.app
 CHROMADB_PORT=443
 CHROMADB_SSL=true
-CHROMADB_API_BASE=https://vietagent-chromadb-production.up.railway.app
+CHROMADB_API_BASE=https://vietagent-chromadb.up.railway.app
 CHROMADB_MAX_CONNECTIONS=10
 CHROMADB_CONNECTION_TIMEOUT=30000
 CHROMADB_RETRY_ATTEMPTS=3
@@ -202,14 +256,14 @@ export default chromaClient;
 ### **Railway Metrics**
 - CPU Usage
 - Memory Usage  
-- Disk Usage (/data volume)
+- Disk Usage (/app/data volume)
 - Network I/O
 - Response Times
 
 ### **ChromaDB Metrics**
 ```bash
 # Check database size:
-curl https://vietagent-chromadb-production.up.railway.app/api/v1/collections
+curl https://vietagent-chromadb.up.railway.app/api/v1/collections
 
 # Monitor collection count and sizes
 # Add custom monitoring endpoints as needed
@@ -240,12 +294,13 @@ curl https://vietagent-chromadb-production.up.railway.app/api/v1/collections
 
 ### **Environment Variables (In Dockerfile)**
 ```dockerfile
-ENV CHROMA_DB_IMPL=duckdb+parquet      # Storage backend
-ENV PERSIST_DIRECTORY=/data            # Railway volume mount
-ENV CHROMA_HOST=0.0.0.0               # Listen on all interfaces  
-ENV CHROMA_PORT=8000                  # Internal port
-ENV IS_PERSISTENT=1                   # Enable persistence
-ENV ANONYMIZED_TELEMETRY=false        # Disable telemetry
+ENV PORT=8000
+ENV CHROMA_HOST=0.0.0.0
+ENV CHROMA_PORT=8000
+ENV IS_PERSISTENT=1
+ENV PERSIST_DIRECTORY=/app/data
+ENV ANONYMIZED_TELEMETRY=false
+ENV CHROMA_DB_IMPL=duckdb+parquet
 ```
 
 ### **Advanced Configuration**
@@ -263,23 +318,18 @@ ENV ANONYMIZED_TELEMETRY=false        # Disable telemetry
 
 ### **Common Issues**
 
-#### **1. "Not Found" Error**
+#### **1. "chromadb to be enabled" Error**
 ```bash
-# Wrong endpoint:
-❌ /api/v1/heartbeat  
-✅ /api/v1
-
-# Wrong URL:
-❌ http://vietagent-chromadb-production.up.railway.app
-✅ https://vietagent-chromadb-production.up.railway.app
+# FIXED: Proper start command in Dockerfile
+✅ CMD ["chroma", "run", "--host", "0.0.0.0", "--port", "8000", "--path", "/app/data"]
 ```
 
 #### **2. Data Loss After Restart**
 ```bash
 # Check Railway Volumes:
 1. Go to Railway Dashboard
-2. Check if /data volume is mounted
-3. Verify PERSIST_DIRECTORY=/data
+2. Check if /app/data volume is mounted
+3. Verify PERSIST_DIRECTORY=/app/data
 4. Ensure IS_PERSISTENT=1
 ```
 
@@ -297,10 +347,10 @@ ENV ANONYMIZED_TELEMETRY=false        # Disable telemetry
 railway logs --service chromadb
 
 # Test health endpoint:
-curl -v https://vietagent-chromadb-production.up.railway.app/api/v1
+curl -v https://vietagent-chromadb.up.railway.app/api/v1
 
 # Check data directory (if shell access):
-ls -la /data/
+ls -la /app/data/
 ```
 
 ---
@@ -309,9 +359,9 @@ ls -la /data/
 
 ### **✅ Pre-Deployment**
 - [ ] Railway project created and connected to GitHub
-- [ ] Persistent volume configured (/data, 5GB+)
-- [ ] Dockerfile updated with correct PERSIST_DIRECTORY
-- [ ] Health check endpoints verified
+- [ ] Persistent volume configured (/app/data, 5GB+)
+- [ ] Dockerfile updated with correct start command
+- [ ] Environment variables set
 
 ### **✅ Post-Deployment**  
 - [ ] Health check passes: `/api/v1`
@@ -354,6 +404,6 @@ ls -la /data/
 
 ---
 
-**🔧 Service Status**: ✅ **OPERATIONAL**  
+**🔧 Service Status**: ✅ **FIXED & OPERATIONAL**  
 **📊 Data Persistence**: ✅ **CONFIGURED**  
 **🔗 Integration Ready**: ✅ **READY FOR CONNECTION** 
