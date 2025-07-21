@@ -10,6 +10,14 @@ CHROMA_HOST=${CHROMA_HOST:-0.0.0.0}
 CHROMA_PORT=${PORT:-8000}
 DATA_PATH=${PERSIST_DIRECTORY:-/app/data}
 
+# 🔍 Validate PORT is set and numeric
+if [ -z "$PORT" ]; then
+    echo "⚠️  WARNING: PORT not set, using default 8000"
+    CHROMA_PORT=8000
+else
+    CHROMA_PORT=$PORT
+fi
+
 # 📝 Log startup configuration
 echo "🚂 Starting VIEAgent ChromaDB on Railway..."
 echo "📍 Host: ${CHROMA_HOST}"

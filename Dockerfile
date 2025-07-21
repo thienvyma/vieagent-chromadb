@@ -36,6 +36,5 @@ ENV CHROMA_DB_IMPL=duckdb+parquet
 # Expose port for Railway
 EXPOSE 8000
 
-# 🎯 FIXED: Use shell form to properly expand $PORT environment variable
-# Alternative: Use startup script with /app/start.sh
-CMD chroma run --host 0.0.0.0 --port ${PORT:-8000} --path /app/data 
+# 🎯 FIXED: Use startup script for robust PORT handling
+CMD ["/app/start.sh"] 
