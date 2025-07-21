@@ -39,6 +39,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8000/api/v1/heartbeat || exit 1
 
-# 🔧 FIXED: Use uvicorn to start ChromaDB server directly
-# This approach should work with the ChromaDB base image
-CMD ["uvicorn", "chromadb.app:app", "--host", "0.0.0.0", "--port", "8000"] 
+# 🔧 FIXED: Let ChromaDB base image handle startup with its default entrypoint
+# The base image knows how to start ChromaDB properly 
