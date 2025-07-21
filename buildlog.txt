@@ -1,0 +1,66 @@
+
+
+[Region: asia-southeast1]
+
+=========================
+
+Using Detected Dockerfile
+
+=========================
+
+
+context: 52jn-9bYm
+
+[internal] load build definition from Dockerfile
+
+[internal] load build definition from Dockerfile  ✔ 0 ms
+
+[internal] load build definition from Dockerfile
+
+[internal] load build definition from Dockerfile  ✔ 11 ms
+
+[internal] load metadata for docker.io/chromadb/chroma:latest
+
+[auth] chromadb/chroma:pull token for registry-1.docker.io
+
+[auth] chromadb/chroma:pull token for registry-1.docker.io  ✔ 0 ms
+
+[internal] load metadata for docker.io/chromadb/chroma:latest  ✔ 1 sec
+
+[internal] load .dockerignore
+
+[internal] load .dockerignore  ✔ 0 ms
+
+[internal] load .dockerignore
+
+[internal] load .dockerignore  ✔ 10 ms
+
+[4/4] RUN mkdir -p /app/data &&     chmod -R 777 /app/data
+
+[3/4] RUN apt-get update &&     apt-get install -y curl &&     rm -rf /var/lib/apt/lists/*
+
+[2/4] WORKDIR /app
+
+[1/4] FROM docker.io/chromadb/chroma:latest@sha256:663aa18087cd698aacc3c16c1ea0c1585be9a6392e2fd80c3086c371e2f89363
+
+[1/4] FROM docker.io/chromadb/chroma:latest@sha256:663aa18087cd698aacc3c16c1ea0c1585be9a6392e2fd80c3086c371e2f89363
+
+[2/4] WORKDIR /app  ✔ 0 ms – CACHED
+
+[3/4] RUN apt-get update &&     apt-get install -y curl &&     rm -rf /var/lib/apt/lists/*  ✔ 0 ms – CACHED
+
+[4/4] RUN mkdir -p /app/data &&     chmod -R 777 /app/data  ✔ 0 ms – CACHED
+
+exporting to docker image format
+
+exporting to image
+
+[auth] sharing credentials for production-asia-southeast1-eqsg3a.railway-registry.com
+
+[auth] sharing credentials for production-asia-southeast1-eqsg3a.railway-registry.com  ✔ 0 ms
+
+importing to docker
+
+importing to docker  ✔ 4 sec
+
+Build time: 8.49 seconds

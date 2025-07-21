@@ -123,7 +123,7 @@ ChromaDB stores vector data that **MUST persist** across container restarts:
 4. Scroll to "Volumes" section
 5. Click "Add Volume":
    - Volume Name: chromadb-data
-   - Mount Path: /chroma/data
+   - Mount Path: /app/data
    - Size: 5GB (recommended minimum)
 6. Click "Create Volume"
 7. Redeploy the service
@@ -132,7 +132,7 @@ ChromaDB stores vector data that **MUST persist** across container restarts:
 ##### **3.2. Data Storage Structure:**
 ```bash
 # Railway Volume Mount:
-/chroma/data/                          # Persistent storage
+/app/data/                          # Persistent storage
 ├── chroma.sqlite3              # Main database file
 ├── [collection-uuid-1]/        # Vector collection 1
 │   ├── header.bin
@@ -231,8 +231,8 @@ CHROMA_SERVER_HTTP_PORT=8000
 ```bash
 # Check Railway Volumes:
 1. Go to Railway Dashboard
-2. Check if /chroma/data volume is mounted
-3. Verify PERSIST_DIRECTORY=/chroma/data
+2. Check if /app/data volume is mounted
+3. Verify PERSIST_DIRECTORY=/app/data
 4. Ensure volume size is sufficient
 ```
 
