@@ -1,1 +1,1 @@
-web: chroma run --host 0.0.0.0 --port $PORT --path /app/data 
+web: chroma run --host 0.0.0.0 --port 8000 --path /app/data 
