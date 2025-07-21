@@ -35,9 +35,10 @@ ENV CHROMA_SERVER_AUTHZ_PROVIDER=""
 # Expose port
 EXPOSE 8000
 
-# Health check for Railway monitoring
+# 🔧 FIXED: Use correct ChromaDB health check endpoint
+# ChromaDB health check is at /api/v1, not /api/v1/heartbeat
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/api/v1/heartbeat || exit 1
+    CMD curl -f http://localhost:8000/api/v1 || exit 1
 
 # 🔧 FIXED: Let ChromaDB base image handle startup with its default entrypoint
 # The base image knows how to start ChromaDB properly 
