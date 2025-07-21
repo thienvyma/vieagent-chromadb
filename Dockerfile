@@ -6,7 +6,7 @@ FROM chromadb/chroma:latest
 # Set metadata
 LABEL maintainer="thienvyma@gmail.com"
 LABEL description="Production ChromaDB service for VIEAgent Platform"
-LABEL version="1.0.3"
+LABEL version="1.0.4"
 
 # Set working directory
 WORKDIR /app
@@ -20,6 +20,10 @@ RUN apt-get update && \
 RUN mkdir -p /app/data && \
     chmod -R 777 /app/data
 
+# Copy startup script and make it executable
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # 🔧 RAILWAY CHROMADB: Essential environment variables
 ENV CHROMA_HOST=0.0.0.0
 ENV CHROMA_PORT=8000
@@ -31,5 +35,9 @@ ENV CHROMA_DB_IMPL=duckdb+parquet
 # Expose port for Railway
 EXPOSE 8000
 
-# 🎯 SIMPLIFIED: Direct ChromaDB start command
-CMD ["chroma", "run", "--host", "0.0.0.0", "--port", "8000", "--path", "/app/data"] 
+# 🏥 Health check to ensure ChromaDB is responding
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8000/api/v1 || exit 1
+
+# 🎯 ENHANCED: Use startup script with health check
+CMD ["/app/start.sh"] 
