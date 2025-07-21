@@ -22,25 +22,25 @@ RUN apt-get update && \
     apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
-# 🔧 FIXED: Environment variables for Railway with persistent volume
+# 🔧 RAILWAY-SPECIFIC: Environment variables for ChromaDB on Railway
 ENV CHROMA_DB_IMPL=duckdb+parquet
 ENV PERSIST_DIRECTORY=/data
 ENV CHROMA_HOST=0.0.0.0
 ENV CHROMA_PORT=8000
 ENV PORT=8000
-ENV ANONYMIZED_TELEMETRY=false
 ENV IS_PERSISTENT=1
+ENV ANONYMIZED_TELEMETRY=false
 ENV CHROMA_SERVER_CORS_ALLOW_ORIGINS=["*"]
 ENV CHROMA_SERVER_AUTHN_PROVIDER=""
 ENV CHROMA_SERVER_AUTHZ_PROVIDER=""
 
+# 🔧 RAILWAY-SPECIFIC: Reference variables for networking
+ENV CHROMA_PUBLIC_URL=https://vieagent-chromadb-production.up.railway.app
+ENV CHROMA_PRIVATE_URL=http://vietagent-chromadb.railway.internal:8000
+
 # Expose port
 EXPOSE 8000
 
-# 🔧 FIXED: Use correct ChromaDB health check endpoint
-# ChromaDB health check is at /api/v1, not /api/v1/heartbeat
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/api/v1 || exit 1
-
-# 🔧 FIXED: Let ChromaDB base image handle startup with its default entrypoint
-# The base image knows how to start ChromaDB properly 
+# 🔧 RAILWAY-SPECIFIC: Let Railway handle start command with uvicorn
+# Railway will use custom start command in deployment settings
+# No CMD specified - Railway start command will override 
