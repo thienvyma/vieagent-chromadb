@@ -11,19 +11,20 @@ LABEL version="1.0.0"
 # Set working directory
 WORKDIR /app
 
-# Create data directory with proper permissions
-RUN mkdir -p /app/chromadb_data && \
-    chmod -R 777 /app/chromadb_data && \
-    chown -R root:root /app/chromadb_data
+# Create data directory for Railway persistent volume
+# Railway will mount persistent storage at /data
+RUN mkdir -p /data && \
+    chmod -R 777 /data && \
+    chown -R root:root /data
 
 # Install required packages for health checks
 RUN apt-get update && \
     apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
-# Environment variables for Railway
+# 🔧 FIXED: Environment variables for Railway with persistent volume
 ENV CHROMA_DB_IMPL=duckdb+parquet
-ENV PERSIST_DIRECTORY=/app/chromadb_data
+ENV PERSIST_DIRECTORY=/data
 ENV CHROMA_HOST=0.0.0.0
 ENV CHROMA_PORT=8000
 ENV ANONYMIZED_TELEMETRY=false
