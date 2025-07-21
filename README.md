@@ -28,13 +28,13 @@
 
 ```bash
 # Health Check (Primary):
-https://vietagent-chromadb.up.railway.app/api/v1
+https://vietagent-chromadb.up.railway.app/api/v2
 
 # Version Info:
-https://vietagent-chromadb.up.railway.app/api/v1/version
+https://vietagent-chromadb.up.railway.app/api/v2/version
 
 # Collections List:
-https://vietagent-chromadb.up.railway.app/api/v1/collections
+https://vietagent-chromadb.up.railway.app/api/v2/collections
 
 # API Documentation:
 https://vietagent-chromadb.up.railway.app/docs
@@ -151,9 +151,9 @@ ChromaDB stores vector data that **MUST persist** across container restarts:
 Base URL: https://vietagent-chromadb.up.railway.app
 
 # Health Checks:
-GET /api/v1                     # API info & health ✅
-GET /api/v1/version            # ChromaDB version ✅
-GET /api/v1/collections        # List collections ✅
+GET /api/v2                     # API info & health ✅
+GET /api/v2/version            # ChromaDB version ✅
+GET /api/v2/collections        # List collections ✅
 
 # Collections Management:
 POST /api/v1/collections       # Create collection

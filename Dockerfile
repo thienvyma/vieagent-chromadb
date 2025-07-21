@@ -41,9 +41,9 @@ ENV CHROMA_SERVER_AUTH_CREDENTIALS=""
 # Expose port for Railway
 EXPOSE 8000
 
-# 🏥 HEALTH CHECK - CORRECT ENDPOINT
+# 🏥 HEALTH CHECK - V2 API ENDPOINT
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8000/api/v1 || exit 1
+  CMD curl -f http://localhost:8000/api/v2 || exit 1
 
 # 🎯 PRODUCTION START COMMAND
 CMD ["chroma", "run", "--host", "0.0.0.0", "--port", "8000", "--path", "/app/data"] 
